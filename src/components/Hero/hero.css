@@ -1,0 +1,62 @@
+.heroWrapper {
+  position: relative;
+  margin-top: 20px;
+}
+
+.heroContent {
+  background-image: url("https://images.pexels.com/photos/2792141/pexels-photo-2792141.jpeg?auto=compress&cs=tinysrgb&w=1600");
+  background-color: #cccccc;
+  /* height: 500px; */
+  height: 100vh;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  position: relative;
+  display: flex;
+  /* align-items: center; */
+  gap: 5px;
+}
+
+@media (max-width: 800px) {
+  .heroImage {
+    display: none;
+  }
+}
+
+.heroText {
+  flex: 0.5;
+  padding-top: 5%;
+}
+
+.heroImage {
+  flex: 0.5;
+  padding-top: 9%;
+}
+
+.heroText h1 {
+  font-size: 5em;
+  font-weight: bold;
+  line-height: 1em;
+}
+
+.heroText h4 {
+  font-weight: 700;
+}
+
+.heroSep {
+  margin-top: 3em;
+  margin-bottom: 3em;
+  height: 5px;
+  background-color: black;
+  width: 10%;
+  border-radius: 10px;
+}
+
+.heroText p {
+  font-weight: 600;
+}
+
+.heroImage img {
+  width: 100%;
+  border-radius: 10px;
+}

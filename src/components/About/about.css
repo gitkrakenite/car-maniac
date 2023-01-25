@@ -1,0 +1,57 @@
+.aboutWrapper {
+  margin-bottom: 5em;
+}
+
+.firstAbout {
+  display: flex;
+  align-items: center;
+  margin-bottom: 3em;
+}
+
+.firstItemText {
+  flex: 0.6;
+}
+
+.firstItemText span {
+  font-weight: bold;
+}
+
+.firstItemImg {
+  flex: 0.4;
+}
+.firstAbout p {
+  line-height: 1.8em;
+}
+
+.firstAbout img {
+  width: 100%;
+  border-radius: 10px;
+}
+
+.secAbout {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.secItemImg {
+  flex: 0.4;
+}
+
+.secItemText {
+  flex: 0.6;
+}
+
+.secAbout img {
+  width: 100%;
+  border-radius: 10px;
+}
+
+@media (max-width: 767px) {
+  .firstAbout {
+    display: block;
+  }
+  .secAbout {
+    display: block;
+  }
+}

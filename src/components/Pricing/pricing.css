@@ -1,0 +1,50 @@
+.pricingPlan {
+  margin-top: 5em;
+  margin-bottom: 5em;
+}
+
+.pricingPlan h1 {
+  font-size: 30px;
+  font-weight: 700;
+}
+
+.pricingWrapper {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  margin-top: 1em;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+@media (max-width: 767px) {
+  .pricingWrapper {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+@media (max-width: 550px) {
+  .pricingWrapper {
+    grid-template-columns: 1fr;
+  }
+}
+
+.pricingItem {
+  box-shadow: 0px 1px 5px 0px rgba(0, 0, 0, 0.75);
+  -webkit-box-shadow: 0px 1px 5px 0px rgba(0, 0, 0, 0.75);
+  -moz-box-shadow: 0px 1px 5px 0px rgba(0, 0, 0, 0.75);
+  padding: 10px;
+  line-height: 1.8em;
+}
+
+.pricingItem h4 {
+  font-weight: bold;
+}
+
+.pricingItem button {
+  background-color: #3b5998;
+  color: white;
+  width: 100%;
+  margin-top: 20px;
+  padding: 10px;
+  border-radius: 10px;
+}
