@@ -1,4 +1,8 @@
 import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useToast } from "@chakra-ui/react";
+import { register } from "../../features/auth/authSlice";
+import { useNavigate } from "react-router-dom";
 
 const Register = () => {
   const [name, setName] = useState("");
@@ -7,6 +11,57 @@ const Register = () => {
   const [password, setPassword] = useState("");
   const [cpassword, setCPassword] = useState("");
   const [see, setSee] = useState(false);
+
+  const toast = useToast();
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const handleRegister = (e) => {
+    e.preventDefault();
+    if (!name || !email || !national || !password) {
+      toast({
+        title: "Details missing",
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+        position: "bottom",
+      });
+      return;
+    }
+    if (password !== cpassword) {
+      toast({
+        title: "Password Mismatch",
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+        position: "bottom",
+      });
+      return;
+    } else {
+      try {
+        const userData = { name, email, national, password };
+        // console.log(profile);
+        dispatch(register(userData));
+        toast({
+          title: "Registration Successful",
+          status: "success",
+          duration: 5000,
+          isClosable: true,
+          position: "bottom",
+        });
+        navigate("/");
+      } catch (error) {
+        toast({
+          title: "Error Occured!",
+          description: error.response.data.message,
+          status: "error",
+          duration: 5000,
+          isClosable: true,
+          position: "bottom",
+        });
+      }
+    }
+  };
 
   return (
     <div>
@@ -18,7 +73,7 @@ const Register = () => {
           Refer someone and win Ksh.100 per referral
         </p>
       </div>
-      <form className="flex flex-col gap-[15px]">
+      <form className="flex flex-col gap-[15px]" onSubmit={handleRegister}>
         <input
           className="bg-transparent p-[10px] outline-none rounded-md"
           style={{ border: "1px solid gray" }}
@@ -77,6 +132,7 @@ const Register = () => {
         <button
           className="bg-blue-600 p-[10px] rounded-md text-slate-100"
           type="submit"
+          onClick={handleRegister}
         >
           Create Account
         </button>

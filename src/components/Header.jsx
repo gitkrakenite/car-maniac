@@ -1,7 +1,19 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { logout } from "../features/auth/authSlice";
 
 const Header = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { user, isLoading, isError, isSuccess, message } = useSelector(
+    (state) => state.auth
+  );
+
+  const handleLogout = () => {
+    dispatch(logout());
+    navigate("/auth");
+  };
   return (
     <div className="pt-4 flex justify-between items-center">
       {/* logo */}
@@ -50,14 +62,25 @@ const Header = () => {
           </ul>
         </div>
         {/* login */}
-        <Link
-          className="cursor-pointer px-[30px] py-[10px] bg-blue-600 text-white rounded-md"
-          to="/auth"
-        >
-          <div>
-            <h3>Login</h3>
-          </div>
-        </Link>
+        {user ? (
+          <Link
+            className="cursor-pointer px-[30px] py-[10px] bg-blue-600 text-white rounded-md"
+            to="/auth"
+          >
+            <div>
+              <h3 onClick={handleLogout}>Logout</h3>
+            </div>
+          </Link>
+        ) : (
+          <Link
+            className="cursor-pointer px-[30px] py-[10px] bg-blue-600 text-white rounded-md"
+            to="/auth"
+          >
+            <div>
+              <h3>Login</h3>
+            </div>
+          </Link>
+        )}
       </div>
     </div>
   );

@@ -1,9 +1,78 @@
 import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useToast } from "@chakra-ui/react";
+import { useNavigate } from "react-router-dom";
+import { login } from "../../features/auth/authSlice";
+import { useEffect } from "react";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [see, setSee] = useState(false);
+
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const toast = useToast();
+
+  const { user, isLoading, isError, isSuccess, message } = useSelector(
+    (state) => state.auth
+  );
+
+  useEffect(() => {
+    if (isSuccess && user) {
+      toast({
+        title: "Login Success",
+        status: "success",
+        duration: 5000,
+        isClosable: true,
+        position: "bottom",
+      });
+      navigate("/");
+    } else {
+      navigate("/auth");
+    }
+  }, [isSuccess, user]);
+
+  useEffect(() => {
+    if (isError) {
+      toast({
+        title: "Invalid credentials",
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+        position: "bottom",
+      });
+    }
+  }, [isError]);
+
+  const handleLogin = (e) => {
+    e.preventDefault();
+    if (!email || !password) {
+      toast({
+        title: "Details missing",
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+        position: "bottom",
+      });
+      return;
+    } else {
+      try {
+        const userData = { email, password };
+        // console.log(profile);
+        dispatch(login(userData));
+      } catch (error) {
+        toast({
+          title: "Error Occured!",
+          description: error.response.data.message,
+          status: "error",
+          duration: 5000,
+          isClosable: true,
+          position: "bottom",
+        });
+      }
+    }
+  };
 
   return (
     <div>
@@ -15,7 +84,7 @@ const Login = () => {
           Refer someone and win Ksh.100 per referral
         </p>
       </div>
-      <form className="flex flex-col gap-[15px]">
+      <form className="flex flex-col gap-[15px]" onSubmit={handleLogin}>
         <input
           className="bg-transparent p-[10px] outline-none rounded-md"
           style={{ border: "1px solid gray" }}
@@ -50,6 +119,7 @@ const Login = () => {
         <button
           className="bg-blue-600 p-[10px] rounded-md text-slate-100"
           type="submit"
+          onClick={handleLogin}
         >
           Sign In
         </button>
