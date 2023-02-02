@@ -14,6 +14,8 @@ const Cars = () => {
     (state) => state.cars
   );
 
+  const { cart } = useSelector((state) => state.cart);
+
   useEffect(() => {
     dispatch(getCars());
   }, [dispatch]);
