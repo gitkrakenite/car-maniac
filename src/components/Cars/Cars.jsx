@@ -1,10 +1,22 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "./cars.css";
 import Rentals from "../../dummyData";
 import { useToast } from "@chakra-ui/react";
+import { useDispatch, useSelector } from "react-redux";
+import { getCars } from "../../features/cars/carSlice";
+import moment from "moment";
 
 const Cars = () => {
   const toast = useToast();
+  const dispatch = useDispatch();
+
+  const { cars, isLoading, isError, isSuccess, message } = useSelector(
+    (state) => state.cars
+  );
+
+  useEffect(() => {
+    dispatch(getCars());
+  }, [dispatch]);
 
   const handleAddToCart = () => {
     toast({
@@ -128,15 +140,22 @@ const Cars = () => {
 
       {/*  car lists*/}
       <div className="carsList">
-        {Rentals.map((rental) => (
-          <div key={rental.id} className="carsMostlyRentedItem">
-            <img src={rental.image} alt="" />
-            <p className="font-bold">{rental.title}</p>
+        {cars?.map((rental) => (
+          <div key={rental._id} className="carsMostlyRentedItem">
+            <img
+              src={rental.image}
+              alt=""
+              style={{ height: "450px", objectFit: "cover" }}
+            />
+            <p className="font-bold">{rental.name}</p>
             <p>At Ksh. {rental.price} Per hour</p>
             <p>Category : {rental.category}</p>
             <p>{rental.description}</p>
+            <p className="mt-[10px] bg-gray-400 text-white p-[8px] rounded-md">
+              Set {moment(rental.createdAt).fromNow()}
+            </p>
             <div className="flex items-center justify-between mt-[10px]">
-              {rental.status === "Available" ? (
+              {rental.quantity > 1 && "Available" ? (
                 <p className="bg-green-700 text-white p-[8px] rounded-md">
                   Available
                 </p>
