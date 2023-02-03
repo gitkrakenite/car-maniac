@@ -2,37 +2,61 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { MdOutlineDelete } from "react-icons/md";
 import "./cart.css";
+import { resetCart } from "../../features/cart/cartSlice";
+import { useSelector, useDispatch } from "react-redux";
+import { useToast } from "@chakra-ui/react";
 
 const Cart = () => {
   const [success, setSuccess] = useState(false);
-  const items = [
-    {
-      id: 1,
-      title: "McLaren Avendatta",
-      price: 50,
-      description: "saskskskkskkskskskslslslllsllslsllllslalslasla",
-      image:
-        "https://images.pexels.com/photos/810357/pexels-photo-810357.jpeg?auto=compress&cs=tinysrgb&w=1600",
-    },
-    {
-      id: 2,
-      title: "Lamborghini Gullard",
-      price: 80,
-      description: "saskskskkskkskskskslslslllsllslsllllslalslasla",
-      image:
-        "https://images.pexels.com/photos/244206/pexels-photo-244206.jpeg?auto=compress&cs=tinysrgb&w=1600",
-    },
-    {
-      id: 3,
-      title: "Buggati Illoris",
-      price: 90,
-      description: "saskskskkskkskskskslslslllsllslsllllslalslasla",
-      image:
-        "https://images.pexels.com/photos/253096/pexels-photo-253096.jpeg?auto=compress&cs=tinysrgb&w=1600",
-    },
-  ];
+
+  const [county, setCounty] = useState("");
+  const [city, setCity] = useState("");
+  const [address, setAddress] = useState("");
+  const [signature, setSignature] = useState("");
+
+  const { cart } = useSelector((state) => state.cart);
+  const { user } = useSelector((state) => state.auth);
+
+  const toast = useToast();
 
   const handleCreateOrder = () => {
+    // check that user exists
+    if (!user) {
+      toast({
+        title: "Must have an account",
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+        position: "bottom",
+      });
+      return;
+    }
+
+    // check that cart exists
+    if (!cart) {
+      toast({
+        title: "Cart is empty",
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+        position: "bottom",
+      });
+      return;
+    }
+
+    // check shipping details exist
+    if (!county || !city || !address || !signature) {
+      toast({
+        title: "Shipping info missing",
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+        position: "bottom",
+      });
+      return;
+    }
+
+    // send information to db
     setSuccess(true);
   };
 
@@ -52,14 +76,14 @@ const Cart = () => {
 
   return (
     <div className="mt-[2em]">
-      {items ? (
+      {cart ? (
         <div>
           <div className="bg-slate-800 p-[15px] rounded-md mb-5">
             <h1 className=" text-gray-50 text-3xl mb-[20px]">
               Here are all the cars you have set up for parking
             </h1>
           </div>
-          {items.map((car) => (
+          {cart.map((car) => (
             <div key={car.id}>
               <div className="flex flex-wrap mb-[30px] justify-between items-center cartItem">
                 <div className="">
@@ -70,7 +94,7 @@ const Cart = () => {
                   />
                 </div>
                 <div>
-                  <p style={{ fontWeight: 600 }}>{car.title}</p>
+                  <p style={{ fontWeight: 600 }}>{car.name}</p>
                   <p style={{ color: "gray" }}>{car.description}</p>
                 </div>
                 <div>
@@ -94,30 +118,41 @@ const Cart = () => {
             <h1 className="mb-[20px] bg-slate-700 p-[15px] text-white">
               Kindly Enter Shipping Details
             </h1>
-            <form className="flex flex-col gap-[10px]">
+            <form
+              className="flex flex-col gap-[10px]"
+              onSubmit={handleCreateOrder}
+            >
               <input
                 className="p-[10px] rounded-md outline-none"
                 style={{ border: "1px solid gray" }}
                 type="text"
                 placeholder="County name"
+                value={county}
+                onChange={(e) => setCounty(e.target.value)}
               />
               <input
                 className="p-[10px] rounded-md outline-none"
                 style={{ border: "1px solid gray" }}
                 type="text"
                 placeholder="City name"
+                value={city}
+                onChange={(e) => setCity(e.target.value)}
               />
               <input
                 className="p-[10px] rounded-md outline-none"
                 style={{ border: "1px solid gray" }}
                 type="text"
                 placeholder="Address details"
+                value={address}
+                onChange={(e) => setAddress(e.target.value)}
               />
               <input
                 className="p-[10px] rounded-md outline-none"
                 style={{ border: "1px solid gray" }}
                 type="text"
                 placeholder="Your Digital Signature"
+                value={signature}
+                onChange={(e) => setSignature(e.target.value)}
               />
             </form>
 

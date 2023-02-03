@@ -4,6 +4,7 @@ import Rentals from "../../dummyData";
 import { useToast } from "@chakra-ui/react";
 import { useDispatch, useSelector } from "react-redux";
 import { getCars } from "../../features/cars/carSlice";
+import { addToCart, resetCart } from "../../features/cart/cartSlice";
 import moment from "moment";
 
 const Cars = () => {
@@ -20,9 +21,13 @@ const Cars = () => {
     dispatch(getCars());
   }, [dispatch]);
 
-  const handleAddToCart = () => {
+  const handleAddToCart = (cartData) => {
+    // console.log(cartData);
+    // check if car already exist in cart
+
+    dispatch(addToCart(cartData));
     toast({
-      title: "Parked Succesfully",
+      title: "Added to cart",
       status: "success",
       duration: 5000,
       isClosable: true,
@@ -167,13 +172,17 @@ const Cars = () => {
                 </p>
               )}
 
-              <img
-                className="cursor-pointer"
-                src="https://img.icons8.com/windows/512/car-roof-box.png"
-                style={{ width: "40px", height: "40px" }}
-                alt=""
-                onClick={handleAddToCart}
-              />
+              {rental.quantity < 1 ? (
+                <p>Out of Stock</p>
+              ) : (
+                <img
+                  className="cursor-pointer"
+                  src="https://img.icons8.com/windows/512/car-roof-box.png"
+                  style={{ width: "40px", height: "40px" }}
+                  alt=""
+                  onClick={() => handleAddToCart(rental)}
+                />
+              )}
             </div>
           </div>
         ))}

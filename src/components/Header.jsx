@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../features/auth/authSlice";
@@ -6,14 +6,23 @@ import { logout } from "../features/auth/authSlice";
 const Header = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [cartTotal, setCartTotal] = useState(0);
+
   const { user, isLoading, isError, isSuccess, message } = useSelector(
     (state) => state.auth
   );
+
+  const { cart } = useSelector((state) => state.cart);
 
   const handleLogout = () => {
     dispatch(logout());
     navigate("/auth");
   };
+
+  useEffect(() => {
+    let size = Object.keys(cart).length;
+    setCartTotal(size);
+  }, [cart]);
   return (
     <div className="pt-4 flex justify-between items-center">
       {/* logo */}
@@ -37,7 +46,7 @@ const Header = () => {
             <li className=" hidden lg:block cursor-pointer ">Pricing</li>
             <li className=" hidden lg:block cursor-pointer ">About</li>
             <li className="hidden lg:block cursor-pointer ">Contact Us</li>
-            <Link to="/cart">
+            <Link to="/cart" className="ml-[18px]">
               <li className=" cursor-pointer flex ">
                 <img
                   src="https://img.icons8.com/windows/512/car-roof-box.png"
@@ -55,7 +64,7 @@ const Header = () => {
                     borderRadius: "50%",
                   }}
                 >
-                  0
+                  {cartTotal}
                 </sup>
               </li>
             </Link>
