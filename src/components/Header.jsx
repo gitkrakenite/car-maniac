@@ -19,19 +19,32 @@ const Header = () => {
     navigate("/auth");
   };
 
+  const handleNavHeader = () => {
+    window.scroll(0, 0);
+  };
+
   useEffect(() => {
     let size = Object.keys(cart).length;
     setCartTotal(size);
   }, [cart]);
   return (
-    <div className="pt-4 flex justify-between items-center">
+    <div
+      className="pt-4 flex justify-between items-center"
+      style={{
+        position: "sticky",
+        zIndex: "900",
+        top: 0,
+        backgroundColor: "white",
+      }}
+    >
       {/* logo */}
-      <div className="flex items-center gap-3">
+      <div className="flex items-center gap-3" onClick={handleNavHeader}>
         <img
           src="https://img.icons8.com/small/512/scream.png"
           className="w-5 h-5 object-cover"
           alt=""
         />
+
         <h2 className="text-lg font-bold cursor-pointer">CARMANIAC</h2>
       </div>
       {/* menu */}

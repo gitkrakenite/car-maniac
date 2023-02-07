@@ -1,19 +1,34 @@
-import React from "react";
+import React, { useState } from "react";
 import "./footer.css";
 
 const Footer = () => {
+  const [success, setSuccess] = useState(false);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setSuccess(true);
+  };
   return (
     <div>
       {/* contact */}
       <div className="footerWrapperContact">
-        <div className="footerContactForm">
-          <h1>Contact Us Here</h1>
-          <form>
-            <input type="text" placeholder="Title of inquiry" />
-            <textarea type="text" placeholder="Enter your message" />
-            <button>Send</button>
-          </form>
-        </div>
+        {success ? (
+          <>
+            <div className="flex flex-col bg-red-600 flex-1 rounded-lg pt-[3em] pl-[4em] text-white">
+              <h1 className="text-4xl mb-[1em]">Thank you for reaching out</h1>
+              <p className="text-lg">Check your email for feedback</p>
+            </div>
+          </>
+        ) : (
+          <div className="footerContactForm">
+            <h1>Contact Us Here</h1>
+            <form onSubmit={handleSubmit}>
+              <input type="text" placeholder="Title of inquiry" />
+              <textarea type="text" placeholder="Enter your message" />
+              <button onClick={handleSubmit}>Send</button>
+            </form>
+          </div>
+        )}
         {/* maps */}
         <div className="maps">
           <iframe
